@@ -1,0 +1,27 @@
+{
+  "name": "du-sh",
+  "version": "0.0.5",
+  "description": "Better LS",
+  "scripts": {
+  },
+  "bin": {
+    "dush": "./bin/dush"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amir-s/du-sh.git"
+  },
+  "keywords": [
+    "ls"
+  ],
+  "author": "Amir Saboury",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amir-s/du-sh/issues"
+  },
+  "homepage": "https://github.com/amir-s/du-sh#readme",
+  "dependencies": {
+    "bytes": "^2.4.0",
+    "colors": "^1.1.2"
+  }
+}
