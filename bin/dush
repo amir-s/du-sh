@@ -27,12 +27,12 @@ exec('du -s -k *', {
 
 let print = data => {
 	console.log();
-	let mx = data.reduce((s, i) => Math.max(s, i.size.length), 0)+3;
+	let mx = data.reduce((s, i) => Math.max(s, i.size.join().length), 0)+3;
 	data.forEach(i => {
 		let name = i.name;
 		if (i.dir) name = name.bold.blue + '/'.red.bold;
 		else name = name;
-		console.log(` ${i.size[0].green}${i.size[1].gray}` + (new Array(mx-i.size.length).join(' ')) + ` ${name}`)
+		console.log(` ${i.size[0].green}${i.size[1].gray}` + (new Array(mx-i.size.join().length).join(' ')) + ` ${name}`)
 	});
 	console.log();
 }
