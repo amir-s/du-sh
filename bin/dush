@@ -16,7 +16,7 @@ exec('du -s -k *', {
 		name: i[1]
 	})).sort((a, b) => b.size - a.size);
 	data.forEach(i => {
-		i.size = bytes(i.size);
+		i.size = bytes(i.size, {unitSeparator: '@'}).split('@');
 		i.dir = fs.lstatSync(path.resolve(dir, i.name)).isDirectory();
 	});
 
@@ -32,7 +32,7 @@ let print = data => {
 		let name = i.name;
 		if (i.dir) name = name.bold.blue + '/'.red.bold;
 		else name = name;
-		console.log(` ${i.size}`.green + (new Array(mx-i.size.length).join(' ')) + ` ${name}`)
+		console.log(` ${i.size[0].green}${i.size[1].gray}` + (new Array(mx-i.size.length).join(' ')) + ` ${name}`)
 	});
 	console.log();
 }
