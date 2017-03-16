@@ -8,11 +8,11 @@ const colors = require('colors');
 
 const dir = path.resolve('.');
 
-exec('du -s *', {
+exec('du -s -k *', {
 	cwd: dir
 }, (err, stdout, stderr) => {
 	let data = stdout.split(/\n/).slice(0, -1).map(i => i.split(/\t/)).map(i => ({
-		size: ~~i[0],
+		size: ~~i[0]*1024,
 		name: i[1]
 	})).sort((a, b) => b.size - a.size);
 	data.forEach(i => {
