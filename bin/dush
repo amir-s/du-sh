@@ -1,38 +1,58 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const exec = require('child_process').exec;
-const path = require('path');
-const bytes = require('bytes');
-const colors = require('colors');
+const fs = require("fs");
+const exec = require("child_process").exec;
+const path = require("path");
+const bytes = require("bytes");
+const colors = require("colors");
+const Spinner = require("cli-spinner").Spinner;
 
-const dir = path.resolve('.');
+const spaces = (n) => new Array(n).join(" ");
 
-exec('du -s -k *', {
-	cwd: dir
-}, (err, stdout, stderr) => {
-	let data = stdout.split(/\n/).slice(0, -1).map(i => i.split(/\t/)).map(i => ({
-		size: ~~i[0]*1024,
-		name: i[1]
-	})).sort((a, b) => b.size - a.size);
-	data.forEach(i => {
-		i.size = bytes(i.size, {unitSeparator: '@'}).split('@');
-		i.dir = fs.lstatSync(path.resolve(dir, i.name)).isDirectory();
-	});
+const spinner = new Spinner("%s calculating ...");
+spinner.setSpinnerString(18);
+spinner.start();
 
-	print(data);
-});
+const dir = path.resolve(".");
 
+exec(
+  "du -s -k *",
+  {
+    cwd: dir,
+  },
+  (err, stdout, stderr) => {
+    spinner.stop(true);
+    let data = stdout
+      .split(/\n/)
+      .slice(0, -1)
+      .map((i) => i.split(/\t/))
+      .map((i) => ({
+        size: ~~i[0] * 1024,
+        name: i[1],
+      }))
+      .sort((a, b) => b.size - a.size);
+    data.forEach((i) => {
+      i.size = bytes(i.size, { unitSeparator: "@" }).split("@");
+      i.dir = fs.lstatSync(path.resolve(dir, i.name)).isDirectory();
+    });
 
+    print(data);
+  }
+);
 
-let print = data => {
-	console.log();
-	let mx = data.reduce((s, i) => Math.max(s, i.size.join().length), 0)+3;
-	data.forEach(i => {
-		let name = i.name;
-		if (i.dir) name = name.bold.blue + '/'.red.bold;
-		else name = name;
-		console.log(` ${i.size[0].green}${i.size[1].gray}` + (new Array(mx-i.size.join().length).join(' ')) + ` ${name}`)
-	});
-	console.log();
-}
+const print = (data) => {
+  console.log();
+  let mx = data.reduce((s, i) => Math.max(s, i.size.join().length), 0);
+  data.forEach((i) => {
+    let name = i.name;
+    if (i.dir) name = name.bold.blue + "/".red.bold;
+
+    console.log(
+      spaces(mx - i.size.join().length + 2) +
+        ` ${i.size[0].green}${i.size[1].gray}` +
+        spaces(2) +
+        ` ${name}`
+    );
+  });
+  console.log();
+};

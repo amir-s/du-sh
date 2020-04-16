@@ -1,9 +1,8 @@
 {
   "name": "du-sh",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "Better LS",
-  "scripts": {
-  },
+  "scripts": {},
   "bin": {
     "dush": "./bin/dush"
   },
@@ -22,6 +21,7 @@
   "homepage": "https://github.com/amir-s/du-sh#readme",
   "dependencies": {
     "bytes": "^2.4.0",
+    "cli-spinner": "^0.2.10",
     "colors": "^1.1.2"
   }
 }
