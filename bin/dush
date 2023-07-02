@@ -22,7 +22,7 @@ exec(
   },
   (err, stdout, stderr) => {
     spinner.stop(true);
-    let data = stdout
+    const data = stdout
       .split(/\n/)
       .slice(0, -1)
       .map((i) => i.split(/\t/))
@@ -42,7 +42,7 @@ exec(
 
 const print = (data) => {
   console.log();
-  let mx = data.reduce((s, i) => Math.max(s, i.size.join().length), 0);
+  const mx = data.reduce((s, i) => Math.max(s, i.size.join().length), 0);
   data.forEach((i) => {
     let name = i.name;
     if (i.dir) name = name.bold.blue + "/".red.bold;
