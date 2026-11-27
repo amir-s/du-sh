@@ -1,6 +1,6 @@
 {
   "name": "du-sh",
-  "version": "0.0.12",
+  "version": "0.1.0",
   "description": "List files and directories by disk usage, largest first",
   "scripts": {
     "test": "node --test",
