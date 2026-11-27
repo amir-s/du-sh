@@ -1,58 +1,6 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const exec = require("child_process").exec;
-const path = require("path");
-const bytes = require("bytes");
-const colors = require("colors");
-const Spinner = require("cli-spinner").Spinner;
-
-const spaces = (n) => new Array(n).join(" ");
-
-const spinner = new Spinner("%s calculating ...");
-spinner.setSpinnerString(18);
-spinner.start();
-
-const dir = path.resolve(".");
-
-exec(
-  "du -s -k *",
-  {
-    cwd: dir,
-  },
-  (err, stdout, stderr) => {
-    spinner.stop(true);
-    const data = stdout
-      .split(/\n/)
-      .slice(0, -1)
-      .map((i) => i.split(/\t/))
-      .map((i) => ({
-        size: ~~i[0] * 1024,
-        name: i[1],
-      }))
-      .sort((a, b) => b.size - a.size);
-    data.forEach((i) => {
-      i.size = bytes(i.size, { unitSeparator: "@" }).split("@");
-      i.dir = fs.lstatSync(path.resolve(dir, i.name)).isDirectory();
-    });
-
-    print(data);
-  }
-);
-
-const print = (data) => {
-  console.log();
-  const mx = data.reduce((s, i) => Math.max(s, i.size.join().length), 0);
-  data.forEach((i) => {
-    let name = i.name;
-    if (i.dir) name = name.bold.blue + "/".red.bold;
-
-    console.log(
-      spaces(mx - i.size.join().length + 2) +
-        ` ${i.size[0].green}${i.size[1].gray}` +
-        spaces(2) +
-        ` ${name}`
-    );
-  });
-  console.log();
-};
+require("../lib/cli").main().catch((error) => {
+  console.error(`dush: ${error.message}`);
+  process.exitCode = 1;
+});
